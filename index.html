@@ -95,7 +95,7 @@
 
         if (actorZip.file(targetXml)) {
           let xmlContent = await actorZip.file(targetXml).async("string");
-          xmlContent = xmlContent.replace(/TumadamMod/g, hight);
+          xmlContent = xmlContent.replace(/ZataMod/g, hight);
           actorZip.file(targetXml, xmlContent);
         } else {
           alert("Không tìm thấy file XML trong Actor.");
