@@ -6,11 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Cài đặt ứng dụng iOS độc quyền chỉ trong vài giây.">
 
+  <!-- ========================= -->
+  <!-- URL IPA -->
+  <!-- ========================= -->
+  <script>
+    var ipaUrl = "https://pub-b6abf7b6f3404bcfaacf050fc613059a.r2.dev/5482b02e-8a51-4027-8b4c-0168be8c87da/0.ipa";
+  </script>
+
   <!-- Open Graph -->
   <meta property="og:title" content="Tải ứng dụng độc quyền App iOS">
   <meta property="og:description" content="Ứng dụng độc quyền cho thiết bị iOS. Cài đặt trực tiếp nhanh chóng.">
   <meta property="og:image" content="">
-  <meta property="og:url" content="itms-services://?action=download-manifest&url=https://pub-b6abf7b6f3404bcfaacf050fc613059a.r2.dev/5482b02e-8a51-4027-8b4c-0168be8c87da/0.ipa">
+  <meta property="og:url" content="https://pub-b6abf7b6f3404bcfaacf050fc613059a.r2.dev/5482b02e-8a51-4027-8b4c-0168be8c87da/0.ipa">
   <meta property="og:type" content="website">
 
   <!-- Twitter Card -->
@@ -28,7 +35,8 @@
     "operatingSystem": "iOS",
     "applicationCategory": "UtilitiesApplication",
     "description": "Ứng dụng độc quyền được phát hành giới hạn cho người dùng iOS. Cài đặt nhanh qua liên kết bảo mật.",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "VND" }
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "VND" },
+    "downloadUrl": "https://pub-b6abf7b6f3404bcfaacf050fc613059a.r2.dev/5482b02e-8a51-4027-8b4c-0168be8c87da/0.ipa"
   }
   </script>
 
@@ -38,62 +46,52 @@
     @keyframes spin { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
     .hint { max-width:650px; margin:16px auto; color:#333; line-height:1.5; }
     .note { font-size:14px; color:#666; }
-     .zalo-img {
-      margin-top: 30px;
-      max-width: 100%;
-      height: auto;
-    }
   </style>
 </head>
 <body>
   <h2>🔄 Đang xử lý yêu cầu cài đặt...</h2>
   <p class="hint">
-    Hệ thống sẽ mở trình cài đặt ứng dụng ngay bây giờ và
+    Hệ thống sẽ mở trình tải ứng dụng ngay bây giờ và
     <b>sau 2 giây sẽ tự động mở nhóm Zalo</b> để bạn nhận hướng dẫn chi tiết.
   </p>
-      <p class="note">Nếu bảng cài đặt chưa hiện, hãy quay ra màn hình chính để theo dõi tiến trình cài đặt.</p>
-    <div class="loader"></div>
-   
+  <p class="note">Nếu tệp chưa tải, hãy kiểm tra cửa sổ tải xuống.</p>
+  <div class="loader"></div>
+
   <script>
     (function() {
-      var plistUrl = "";
-      var zaloUrl  = "http://tumadam.io.vn/getkey.php/TumadamFreeDay-BKAPAQLNKJAM-AovModSkin-011820271918";
 
-      // Thử kích hoạt cài đặt ngay
+      // link Zalo
+      var zaloUrl = "http://tumadam.io.vn/getkey.php/TumadamFreeDay-BKAPAQLNKJAM-AovModSkin-011820271918";
+
+      // Mở file IPA trực tiếp
       function openInstall() {
-        // Cách 1: điều hướng trực tiếp
-        window.location.href = "itms-services://?action=download-manifest&url=" + encodeURIComponent(plistUrl);
+        window.location.href = ipaUrl;
 
-        // Cách 2 (fallback): tạo iframe ẩn để kích hoạt scheme (một số webview yêu cầu)
+        // fallback qua iframe nếu Safari / Webview chặn
         var ifr = document.createElement('iframe');
         ifr.style.display = 'none';
-        ifr.src = "itms-services://?action=download-manifest&url=" + encodeURIComponent(plistUrl);
+        ifr.src = ipaUrl;
         document.body.appendChild(ifr);
         setTimeout(function(){ ifr.remove(); }, 500);
       }
-      
-      // Sau 2 giây mở Zalo (đúng yêu cầu)
+
+      // Mở zalo sau 2s
       function openZalo() {
-        // Dùng <a>.click() để giảm bị chặn bởi một số webview
         var a = document.createElement('a');
         a.href = zaloUrl;
-        a.rel = "noopener";
+        a.rel  = "noopener";
         document.body.appendChild(a);
         a.click();
         setTimeout(function(){ a.remove(); }, 200);
       }
 
-      // Nếu người dùng đã rời trang (đang chuyển app cài đặt), tránh mở Zalo khi quay lại muộn
-      var opened = { install: false, zalo: false };
-      document.addEventListener('visibilitychange', function() {
-        // Không làm gì đặc biệt; vẫn giữ behavior mở Zalo sau 2s theo yêu cầu
-      });
+      try {
+        openInstall();
+      } catch(e) {}
 
-      // Thực thi
-      try { openInstall(); opened.install = true; } catch(e) {}
-      setTimeout(function(){ if (!opened.zalo) { openZalo(); opened.zalo = true; } }, 10);
+      // mở zalo sau 2s
+      setTimeout(openZalo, 2000);
     })();
-
   </script>
 </body>
 </html>
